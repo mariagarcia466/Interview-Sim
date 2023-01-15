@@ -5,10 +5,12 @@ public class Connection : MonoBehaviour
 {
     WebSocket websocket;
 
+    public string lastValue = "0";
+
     // Start is called before the first frame update
     async void Start()
     {
-        websocket = new WebSocket("ws://192.168.137.1:1989");
+        websocket = new WebSocket("ws://ocean.emily.engineer:1989");
 
         websocket.OnOpen += () => { Debug.Log("Connection open!"); };
 
@@ -20,7 +22,7 @@ public class Connection : MonoBehaviour
         {
             // Reading a plain text message
             var message = System.Text.Encoding.UTF8.GetString(bytes);
-            Debug.Log("Received OnMessage! (" + bytes.Length + " bytes) " + message);
+            lastValue = message;
         };
 
         await websocket.Connect();
