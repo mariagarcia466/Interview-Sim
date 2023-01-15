@@ -1,12 +1,63 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using System;
+using System.Collections;
+using System.Text;
+using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.Networking;
+
 
 public class JankasaurusRex : MonoBehaviour
 {
+    private string analysisText = "";
+    
+    // call the Flask server
+    private const string URL = "ocean.emily.engineer:80/";
+    private string _dataToSend = "";
+    public void AnalyzeText(string txt)
+    {
+        AnalyzerData data = new AnalyzerData(txt);
+        var jsonData = JsonConvert.SerializeObject(data);
+
+        _dataToSend = jsonData;
+        
+        StartCoroutine(nameof(MakeAPIRequest));
+    }
+
+    // I don't know if any of this works
+    private IEnumerator MakeAPIRequest()
+    {
+        using UnityWebRequest webRequest = new UnityWebRequest(URL + "/analyze", "POST");
+        webRequest.SetRequestHeader("Content-Type", "application/json");
+        byte[] rawTextData = Encoding.UTF8.GetBytes(_dataToSend);
+        webRequest.uploadHandler = new UploadHandlerRaw(rawTextData);
+        webRequest.downloadHandler = new DownloadHandlerBuffer();
+
+        yield return webRequest.SendWebRequest();
+
+        switch (webRequest.result)
+        {
+            case UnityWebRequest.Result.Success:
+                var res = webRequest.downloadHandler.text;
+                print(res);
+                analysisText = res;
+                break;
+            case UnityWebRequest.Result.InProgress:
+                break;
+            case UnityWebRequest.Result.ConnectionError:
+            case UnityWebRequest.Result.ProtocolError:
+            case UnityWebRequest.Result.DataProcessingError:
+                print(webRequest.error);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
     // IT IS 4:30 AM I AM NO LONGER WRITING GOOD CODE
     // AWFUL CODE IS MY NEW BEST FRIEND
 
@@ -56,6 +107,7 @@ public class JankasaurusRex : MonoBehaviour
 
             lastEvent = currentTime;
             targetTimeDelta = 0F;
+            timerMesh.SetText("");
 
             // Game start
             if (gameState == 0)
@@ -121,8 +173,19 @@ public class JankasaurusRex : MonoBehaviour
             {
                 targetTimeDelta = 0.5F;
                 witHandler.SetActive(false);
+                AnalyzeText(witHandlerScript.fullTranscript);
                 gameState += 1;
-            } 
+            } else if (gameState == 7)
+            {
+                if (analysisText.Equals(""))
+                {
+                    textMesh.SetText("My assessment...");
+                }
+                else
+                {
+                    textMesh.SetText(analysisText);
+                }
+            }
             else
             {
                 textMesh.SetText("no game state :(\nWe haven't made this part yet...");
