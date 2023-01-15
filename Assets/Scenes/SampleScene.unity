@@ -611,7 +611,7 @@ MonoBehaviour:
     sampleLengthInMs: 10
     micBufferLengthInSeconds: 1
     maxConcurrentRequests: 5
-    sendAudioToWit: 1
+    sendAudioToWit: 0
     customTranscriptionProvider: {fileID: 0}
     alwaysRecord: 1
     preferredActivationOffset: -0.5
@@ -619,7 +619,7 @@ MonoBehaviour:
       multiPhrase: 1
       scenario: default
       inputType: text_default
-  usePlatformServices: 0
+  usePlatformServices: 1
   enableConsoleLogging: 0
 --- !u!4 &709680247
 Transform:
