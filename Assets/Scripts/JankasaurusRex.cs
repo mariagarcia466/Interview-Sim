@@ -14,11 +14,13 @@ public class JankasaurusRex : MonoBehaviour
     public GameObject textDisplay;
     public GameObject boxButton;
     public GameObject timerDisplay;
+    public GameObject witHandler;
 
     private Connection socketConnection;
 
     private TextMeshProUGUI textMesh;
     private TextMeshProUGUI timerMesh;
+    private WitHandler witHandlerScript;
 
     private BoxButtonScript boxButtonScript;
 
@@ -31,6 +33,9 @@ public class JankasaurusRex : MonoBehaviour
         textMesh = textDisplay.GetComponent<TextMeshProUGUI>();
         timerMesh = timerDisplay.GetComponent<TextMeshProUGUI>();
         boxButtonScript = boxButton.GetComponent<BoxButtonScript>();
+        witHandlerScript = witHandler.GetComponent<WitHandler>();
+        
+        witHandler.SetActive(true);
     }
 
     // Update is called once per frame
@@ -41,9 +46,15 @@ public class JankasaurusRex : MonoBehaviour
     {
         float currentTime = Time.time;
         float timeDelta = currentTime - lastEvent;
+        if (true)
+        {
+            textMesh.SetText(witHandlerScript.fullTranscript);
+            timerMesh.SetText(witHandlerScript.tempTranscript);
+        }
+        
 
         // This is how we handle sleep :sunglasses:
-        if (timeDelta >= targetTimeDelta)
+        else if (timeDelta >= targetTimeDelta)
         {
             // THIS IS TERRIBLE CODE
             // DO NOT READ ANY FURTHER
