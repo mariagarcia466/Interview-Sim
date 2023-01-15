@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 public class CohereWrapper : MonoBehaviour
 {
+    // call the Flask server
     private string _url = "localhost:9989/analyze";
     private string _dataToSend = "";
     
@@ -21,6 +22,11 @@ public class CohereWrapper : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TestAPI()
+    {
+        AnalyzeText("I was born with glass bones and paper skin. Every morning I break my legs, and every afternoon I break my arms. At night, I lie awake in agony until my heart attacks put me to sleep.");
     }
 
     public void AnalyzeText(string text)
