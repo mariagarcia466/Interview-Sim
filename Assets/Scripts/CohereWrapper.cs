@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 public class CohereWrapper : MonoBehaviour
 {
     // call the Flask server
-    private const string URL = "localhost:9989/";
+    private const string URL = "ocean.emily.engineer:80/";
     private string _dataToSend = "";
     
     public void TestAPI()
