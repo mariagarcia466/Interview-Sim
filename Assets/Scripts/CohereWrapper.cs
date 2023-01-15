@@ -16,9 +16,9 @@ public class CohereWrapper : MonoBehaviour
         AnalyzeText("I was born with glass bones and paper skin. Every morning I break my legs, and every afternoon I break my arms. At night, I lie awake in agony until my heart attacks put me to sleep.");
     }
 
-    public void AnalyzeText(string text)
+    public void AnalyzeText(string txt)
     {
-        AnalyzerData data = new AnalyzerData(text);
+        AnalyzerData data = new AnalyzerData(txt);
         var jsonData = JsonConvert.SerializeObject(data);
 
         _dataToSend = jsonData;
