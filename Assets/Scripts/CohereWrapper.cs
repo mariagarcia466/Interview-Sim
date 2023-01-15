@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -9,21 +8,9 @@ using UnityEngine.Networking;
 public class CohereWrapper : MonoBehaviour
 {
     // call the Flask server
-    private string _url = "localhost:9989/analyze";
+    private const string URL = "localhost:9989/";
     private string _dataToSend = "";
     
-    // Start is called before the first frame update
-    void Start()
-    {
-            
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void TestAPI()
     {
         AnalyzeText("I was born with glass bones and paper skin. Every morning I break my legs, and every afternoon I break my arms. At night, I lie awake in agony until my heart attacks put me to sleep.");
@@ -36,12 +23,13 @@ public class CohereWrapper : MonoBehaviour
 
         _dataToSend = jsonData;
         
-        StartCoroutine("MakeAPIRequest");
+        StartCoroutine(nameof(MakeAPIRequest));
     }
 
+    // I don't know if any of this works
     private IEnumerator MakeAPIRequest()
     {
-        using UnityWebRequest webRequest = new UnityWebRequest(_url, "POST");
+        using UnityWebRequest webRequest = new UnityWebRequest(URL + "/analyze", "POST");
         webRequest.SetRequestHeader("Content-Type", "application/json");
         byte[] rawTextData = Encoding.UTF8.GetBytes(_dataToSend);
         webRequest.uploadHandler = new UploadHandlerRaw(rawTextData);
